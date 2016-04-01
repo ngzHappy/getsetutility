@@ -12,6 +12,9 @@ int main(int argc, char *argv[])
     }
 
     MainWindow window;
+    window.setClassName("Class");
+    window.setValueName("value");
+    window.setValueType("std::string");
     window.show();
 
     return app.exec();

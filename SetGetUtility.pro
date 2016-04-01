@@ -1,4 +1,5 @@
 CONFIG += c++14
+#CONFIG += console
 
 QT += core gui
 QT += widgets
@@ -11,5 +12,5 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     SetGetUtility.cpp
 
-HEADERS  += MainWindow.hpp \
-    SetGetUtility.hpp
+HEADERS  += $$PWD/MainWindow.hpp
+HEADERS  += $$PWD/SetGetUtility.hpp

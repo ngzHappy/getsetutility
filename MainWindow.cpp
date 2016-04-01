@@ -7,6 +7,7 @@
 #include <QtWidgets/qtextedit.h>
 #include <QtWidgets/qlineedit.h>
 #include <QtWidgets/qformlayout.h>
+#include <QtCore/qdebug.h>
 
 class _MainWindowPrivate{
 public:
@@ -32,17 +33,17 @@ public:
         super->connect(
                     className_,&QLineEdit::editingFinished,
                     super,[super,this](){ super->setClassName( className_->text() ); }
-                    );
+        );
 
         super->connect(
                     valueType_,&QLineEdit::editingFinished,
                     super,[super,this](){ super->setValueType(valueType_->text() ); }
-                    );
+        );
 
         super->connect(
                     valueName_,&QLineEdit::editingFinished,
                     super,[super,this](){ super->setValueName( valueName_->text() ); }
-                    );
+        );
 
     }
     ~_MainWindowPrivate(){
@@ -59,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout_->setSpacing(0);
     layout_->setMargin(0);
     thisp_ = new _MainWindowPrivate(this,layout_);
-    this->resize(256,512);
+    this->resize(512,512);
     this->setMinimumHeight(512);
     this->setMinimumWidth(256);
 }
@@ -94,32 +95,45 @@ void MainWindow::setClassName(QString && v){
     updateValue();
 }
 
- const QString &  MainWindow::getValueType()const{
-     return thisp_->setGetUtility_->getValueType();
- }
+const QString &  MainWindow::getValueType()const{
+    return thisp_->setGetUtility_->getValueType();
+}
 
- void MainWindow::setValueType(QString && v){
-     if(v==getValueType()){return;}
-     thisp_->setGetUtility_->setValueType(std::move(v));
-     updateValue();
- }
- void MainWindow::setValueType(const QString & v){
-     if(v==getValueType()){return;}
-     thisp_->setGetUtility_->setValueType(v);
-     updateValue();
- }
+void MainWindow::setValueType(QString && v){
+    if( v==getValueType() ){return;}
+    thisp_->setGetUtility_->setValueType(std::move(v));
+    updateValue();
+}
+void MainWindow::setValueType(const QString & v){
+    if( v==getValueType() ){return;}
+    thisp_->setGetUtility_->setValueType(v);
+    updateValue();
+}
 
 void MainWindow::setValueName(QString && v){
-     if( v==getValueName() ){return;}
-     thisp_->setGetUtility_->setValueName(std::move(v));
-     updateValue();
+    if( v==getValueName() ){return;}
+    thisp_->setGetUtility_->setValueName(std::move(v));
+    updateValue();
 }
 
 void MainWindow::updateValue(){
 
+    thisp_->valueName_->blockSignals(true);
+    thisp_->valueType_->blockSignals(true);
+    thisp_->className_->blockSignals(true);
+
+    thisp_->valueName_->setText( getValueName() );
+    thisp_->valueType_->setText( getValueType() );
+    thisp_->className_->setText( getClassName() );
+
+    thisp_->valueName_->blockSignals(false);
+    thisp_->valueType_->blockSignals(false);
+    thisp_->className_->blockSignals(false);
+
     QString value_ans_ = (*(thisp_->setGetUtility_))();
     thisp_->textBrowser_->setPlainText( std::move(value_ans_) );
 
+    /*qDebug().noquote()<<value_ans_;*/
 }
 
 

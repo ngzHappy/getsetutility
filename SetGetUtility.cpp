@@ -20,7 +20,7 @@ QString SetGetUtility::operator()(){
         if(functionValueName_[0].isLower()){
             functionValueName_[0] = functionValueName_[0].toUpper();
         }
-        const QString commentValeName_=" /*"+valueName_+"*/ ";
+        const QString commentValeName_=" /*"+valueName_+"*/";
         const QString typenameValueTypeName_="_t_" +valueName_.toUpper()+ "_t__";
         const QString valueNameVar_="_"+valueName_+"_";
         const QString space_("    ");
@@ -34,6 +34,9 @@ QString SetGetUtility::operator()(){
 
         ans_+=space_+"const "+valueType_+" & get";
         ans_+=functionValueName_+"() const;\n";
+
+        ans_+=space_+"const "+valueType_+" & ";
+        ans_+=valueName_+"() const{ return get" +functionValueName_+ "();}\n";
 
         ans_+="private: template<typename "+typenameValueTypeName_+">\n";
         ans_+=space_+"void _p_set"+functionValueName_+"(";
